@@ -79,6 +79,13 @@ def get_cookies(headless):
         proc.kill()
     return [c for c in cookies if 'yandex' in c['domain']]
 
+def items(data):
+    if isinstance(data, list):
+        return data
+    if isinstance(data, dict) and isinstance(data.get('results'), list):
+        return data['results']
+    sys.exit('[!] Неизвестный формат ответа:\n' + json.dumps(data, ensure_ascii=False)[:1500])
+
 def make_session(cookies):
     session = requests.Session()
     for c in cookies:
@@ -328,7 +335,7 @@ def main():
         print(f"[!] Ошибка запроса уроков: {resp.status_code} {lessons_url}")
         return
 
-    lessons = resp.json()
+    lessons = items(resp.json())
     print(f"[+] Найдено уроков: {len(lessons)}")
 
     course_toc = []
@@ -350,7 +357,7 @@ def main():
             print(f"  [!] Ошибка при получении задач урока {l_id}: {tasks_resp.status_code} {tasks_url}")
             continue
 
-        tasks_list = tasks_resp.json().get('results', [])
+        tasks_list = items(tasks_resp.json())
         print(f"  Найдено задач: {len(tasks_list)}")
         total_tasks_count += len(tasks_list)
 
