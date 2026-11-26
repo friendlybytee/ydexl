@@ -1,75 +1,49 @@
-"""
-Задача: Бумс!
-Категория: Классная работа
-Ограничение времени: 20 секунд
-Ограничение памяти: 512 Мб
-
-Условие:
-В мультиках часто удары изображают в виде концентрических кругов. Давайте нарисуем что-то подобное.
-
-Напишите приложение, в котором в центре окна 800 х 600, залитого цветом ASH\_GREY, начинают расти круги: сначала белый заданного размера, а внутри него чёрный.
-
-Стартовый радиус белого круга передаётся в конструктор класса при инициализации. Начальный радиус чёрного круга считается равным нулю.
-
-При запуске приложения круги начинают расти со скоростью увеличения радиусов 1. Как только чёрный круг достигает стартового размера, в его центре появляется белый круг радиуса 0 и тоже начинает расти. Потом в его центре появляется чёрный круг и так бесконечно.
-
-Постарайтесь написать программу так, чтобы не хранить много радиусов в памяти.
-
-Важно учесть, что все размеры кругов зависят от радиуса первого круга — `start_radius`. Для рисования кругов используйте метод `draw_circle_filled()`.
-
-Используйте шаблон кода ниже (вместо `...` впишите свой код). Атрибуты класса должны иметь такие же имена, как и переданные аргументы.
-
- **Шаблон кода решения**
-
-```
 import arcade
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Boms"
 
+
 class MyGame(arcade.Window):
     def __init__(self, width, height, title, start_radius):
         super().__init__(width, height, title)
+        arcade.set_background_color(arcade.color.ASH_GREY)
         self.start_radius = start_radius
 
     def setup(self):
-        self.circle_radius = ...  # Список текущих значений радиусов кругов
-        self.colors = ...  # Список текущих значений цвета кругов
-        self.circle_change = 1  # Скорость изменения радиусов
+        self.circle_radius = [self.start_radius, 0]
+        self.colors = [arcade.color.WHITE, arcade.color.BLACK]
+        self.circle_change = 1
 
     def on_draw(self):
         self.clear()
-        ...
+        for i in range(len(self.circle_radius)):
+            arcade.draw_circle_filled(self.width / 2, self.height / 2, self.circle_radius[i], self.colors[i])
 
     def on_update(self, delta_time):
-        ...
+        for i in range(len(self.circle_radius)):
+            self.circle_radius[i] += self.circle_change
+        if self.circle_radius[-1] >= self.start_radius:
+            if self.colors[-1] == arcade.color.BLACK:
+                self.colors.append(arcade.color.WHITE)
+            else:
+                self.colors.append(arcade.color.BLACK)
+            self.circle_radius.append(0)
+        if self.circle_radius[1] > self.width + self.height:
+            self.circle_radius.pop(0)
+            self.colors.pop(0)
+
 
 def setup_game(width=800, height=600, title="Boms", start_radius=50):
     game = MyGame(width, height, title, start_radius)
     game.setup()
     return game
 
+
 def main():
     setup_game(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     arcade.run()
-
-if __name__ == "__main__":
-    main()
-```
-
-### Результат
-
-![gif result](./statement-file)
-
-"""
-
-import sys
-
-
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
 
 
 if __name__ == "__main__":

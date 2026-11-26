@@ -1,23 +1,3 @@
-"""
-Задача: Розеттский камень
-Категория: Дополнительные задачи
-Ограничение времени: 20 секунд
-Ограничение памяти: 512 Мб
-
-Условие:
-На камне текст был написан на трёх языках, что и позволило в конце концов его расшифровать.
-
-Напишите приложение, которое разместит три переданные в конструкторе класса надписи в окне с размерами 600 х 400 в точках (300, 100), (300, 200), (300, 300) (координаты точки соответствуют центру надписи по обеим осям).
-
-Заливка окна — белая, шрифт `Arial`, размер передаётся в конструкторе класса, как и список цветов текста в RGB-формате.
-
-Используйте `Batch` и `arcade.Text`. Так же не забудьте сохранить цвета и строки в атрибуты `self.colors` и `self.lines` соответственно.
-
-Используйте шаблон кода ниже (вместо ... впишите свой код). Атрибуты класса должны иметь такие же имена, как и переданные или объявленные аргументы в шаблоне.
-
- **Шаблон кода решения**
-
-```
 import arcade
 
 from pyglet.graphics import Batch
@@ -25,15 +5,25 @@ from pyglet.graphics import Batch
 DEFAULT_FONT_SIZE = 40
 SCREEN_TITLE = "Rosetta Stone"
 
+
 class MyGame(arcade.Window):
     def __init__(self, width, height, title, lines, colors, font_size):
         super().__init__(width, height, title)
+        arcade.set_background_color(arcade.color.WHITE)
         self.batch = Batch()
-        ...
+        self.lines = lines
+        self.colors = colors
+        self.font_size = font_size
+        self.texts = []
+        for i in range(3):
+            t = arcade.Text(lines[i], 300, 100 * (i + 1), tuple(colors[i]), font_size,
+                            font_name="Arial", anchor_x="center", anchor_y="center", batch=self.batch)
+            self.texts.append(t)
 
     def on_draw(self):
         self.clear()
-        ...
+        self.batch.draw()
+
 
 def setup_game(width=600, height=400, title="Rosetta", lines=None, colors=None, font_size=40):
     lines = lines or ["Ροζέτα Στόουν", "Rosetta stone", "حجر رشيد"]
@@ -42,29 +32,13 @@ def setup_game(width=600, height=400, title="Rosetta", lines=None, colors=None, 
     game = MyGame(width, height, title, lines, colors, font_size)
     return game
 
+
 def main():
     setup_game(
         600, 400, SCREEN_TITLE, ["Ροζέτα Στόουν", "Rosetta stone", "حجر رشيد"],
         [[255, 3, 62], [153, 102, 204], [164, 198, 57]], DEFAULT_FONT_SIZE
     )
     arcade.run()
-
-if __name__ == "__main__":
-    main()
-```
-
-### Результат
-
-![result](./statement-file)
-
-"""
-
-import sys
-
-
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
 
 
 if __name__ == "__main__":

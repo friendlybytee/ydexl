@@ -1,29 +1,3 @@
-"""
-Задача: Улетаем
-Категория: Дополнительные задачи
-Ограничение времени: 20 секунд
-Ограничение памяти: 768 Мб
-
-Условие:
-Напишите приложение на `arcade`, в белом окне которого аисты летят друг за другом бесконечно. На схеме показан один аист, справа от него вплотную к этому изображению летит следующий.
-
-![alt-text](./statement-file)
-
-Размер окна по горизонтали — дважды повторённый размер схемы. Характерный размер клетки передаётся в конструктор класса как атрибут `self.part`.
-
-При рисовании аиста используются цвета: белый, чёрный, красный. Толщина контура — 1/10 характерного размера.
-
-[ссылка на детальное изображение](https://assets.contest.yandex.net/testsys/statement-file?hash=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..GygAuEaB0px9d5Tw.EMuJsPDeXIGiiaR45n5xGkj3kJo-kcwWFLMTjtzpGbAIC4-94S2BfeuPpyl6ZnDCvxg5xC7Iz87kbz1j7HxCczqB4F4fYXq91EcjiiMVhCWpYYK_aE89YeY2t3olmHG0m0Mh6PHO.-3vV-Thg2ecx73qGDk3Uvg)
-
-Используйте такие методы отрисовки: `arcade.draw_circle_outline()`, `arcade.draw_circle_filled()`, `arcade.draw_triangle_filled()`, `arcade.draw_arc_outline()`, `arcade.draw_arc_filled()`, `arcade.draw_line()`.
-
-Шаг изменения координаты за кадр равен 0.05.
-
-Используйте шаблон кода ниже (вместо ... впишите свой код). Атрибуты класса должны иметь такие же имена, как и переданные или объявленные аргументы в шаблоне.
-
- **Шаблон кода решения**
-
-```
 import arcade
 
 PART = 20
@@ -31,47 +5,60 @@ SCREEN_WIDTH = PART * 36
 SCREEN_HEIGHT = PART * 15
 SCREEN_TITLE = "Flying storks"
 
+
 class MyGame(arcade.Window):
     def __init__(self, width, height, title, part):
         super().__init__(width, height, title)
-        ...
+        arcade.set_background_color(arcade.color.WHITE)
+        self.part = part
 
     def setup(self):
-        self.storks = ...  # Список координат кончика клюва трёх аистов
-        # Первый — 0, второй — посередине окна, третий — правый край окна
+        n = self.width / self.part
+        self.storks = [0, n / 2, n]
 
     def on_draw(self):
         self.clear()
-        ...
+        for x in self.storks:
+            self.draw_stork(x)
+
+    def draw_stork(self, x):
+        p = self.part
+        b = p / 10
+        w = arcade.color.WHITE
+        k = arcade.color.BLACK
+        r = arcade.color.RED
+        arcade.draw_triangle_filled(x * p, 11 * p, (x + 2) * p, 11.3 * p, (x + 2) * p, 10.7 * p, r)
+        arcade.draw_circle_filled((x + 3) * p, 11 * p, p, w)
+        arcade.draw_circle_outline((x + 3) * p, 11 * p, p, k, b)
+        arcade.draw_circle_filled((x + 3) * p, 11 * p, 0.3 * p, k)
+        arcade.draw_arc_filled((x + 10) * p, 11 * p, 4 * p, 4 * p, w, 180, 360)
+        arcade.draw_arc_outline((x + 10) * p, 11 * p, 4 * p, 4 * p, k, 180, 360, b)
+        arcade.draw_line((x + 4) * p, 11 * p, (x + 16) * p, 11 * p, k, b)
+        arcade.draw_line((x + 4) * p, 10.7 * p, (x + 8) * p, 10.7 * p, k, b)
+        arcade.draw_line((x + 12) * p, 11 * p, (x + 16) * p, 10 * p, k, b)
+        arcade.draw_arc_filled((x + 11.5) * p, 11.5 * p, 3 * p, 3 * p, k, 45, 225)
+        arcade.draw_circle_filled((x + 14) * p, 11 * p, 0.2 * p, r)
+        arcade.draw_circle_filled((x + 14) * p, 10.5 * p, 0.2 * p, r)
+        arcade.draw_triangle_filled((x + 16) * p, 11 * p, (x + 16.5) * p, 11.3 * p, (x + 16.5) * p, 10.7 * p, r)
+        arcade.draw_triangle_filled((x + 16) * p, 10 * p, (x + 16.5) * p, 10.3 * p, (x + 16.5) * p, 9.7 * p, r)
 
     def on_update(self, delta_time):
-        ...
+        n = self.width / self.part
+        for i in range(3):
+            self.storks[i] -= 0.05
+            if self.storks[i] <= -n / 2:
+                self.storks[i] += n * 1.5
+
 
 def setup_game(width=720, height=300, title="Flying storks", part=20):
     game = MyGame(width, height, title, part)
     game.setup()
     return game
 
+
 def main():
     setup_game(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, PART)
     arcade.run()
-
-if __name__ == "__main__":
-    main()
-```
-
-### Результат
-
-![gif result](./statement-file)
-
-"""
-
-import sys
-
-
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
 
 
 if __name__ == "__main__":

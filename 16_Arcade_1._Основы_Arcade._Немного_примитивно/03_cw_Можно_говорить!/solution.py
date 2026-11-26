@@ -1,24 +1,9 @@
-"""
-Задача: Можно говорить!
-Категория: Классная работа
-Ограничение времени: 20 секунд
-Ограничение памяти: 256 Мб
-
-Условие:
-Дорисуйте смайлу рот — это дуга в 180 градусов, расположение которой показано на схеме. Толщина линии — 1/20 от радиуса смайла. Цвет чёрный. Используйте метод `draw_arc_outline`. Положение глаз показано на схеме (их центры находятся на половине радиуса по горизонтали и по вертикали). Размер глаза — 15 пикселей. Ширина и высота эллипса, частью которого является улыбка, равна 3/2 (три вторых) радиуса. Вычисления производить в целых числах.
-
-![alt-text](./statement-file)
-
-Используйте шаблон кода ниже (вместо `...` впишите свой код). Атрибуты класса должны иметь такие же имена, как и переданные аргументы.
-
- **Шаблон кода решения**
-
-```
 import arcade
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Smile Silence"
+
 
 class MyGame(arcade.Window):
     def __init__(self, width, height, title, radius):
@@ -27,34 +12,24 @@ class MyGame(arcade.Window):
         self.radius = radius
 
     def on_draw(self):
-        '''Этот метод отвечает за отрисовку содержимого окна'''
         self.clear()
-        ...
+        x = self.width // 2
+        y = self.height // 2
+        r = self.radius
+        arcade.draw_circle_filled(x, y, r, (255, 192, 0))
+        arcade.draw_circle_filled(x - r // 2, y + r // 2, 15, arcade.color.BLACK)
+        arcade.draw_circle_filled(x + r // 2, y + r // 2, 15, arcade.color.BLACK)
+        arcade.draw_arc_outline(x, y, r * 3 // 2, r * 3 // 2, arcade.color.BLACK, 180, 360, r // 20)
+
 
 def setup_game(width=800, height=600, title="Smile Silence", radius=200):
     game = MyGame(width, height, title, radius)
     return game
 
+
 def main():
     setup_game(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     arcade.run()
-
-if __name__ == "__main__":
-    main()
-```
-
-### Результат (800x600) с радиусом 200
-
-![alt-text](./statement-file)
-
-"""
-
-import sys
-
-
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
 
 
 if __name__ == "__main__":

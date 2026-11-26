@@ -1,21 +1,3 @@
-"""
-Задача: Летающие квадраты
-Категория: Классная работа
-Ограничение времени: 20 секунд
-Ограничение памяти: 256 Мб
-
-Условие:
-Напишите приложение на `arcade`, рисующее два квадрата, разлетающихся снизу вверх вправо и влево под углом в 45 градусов.
-
-Сначала квадраты находятся посередине окна чёрного цвета внизу один поверх другого. Затем начинают разлетаться, в каждом цикле смещаясь на 2 пикселя по х и по у.
-
-Для рисования квадратов используйте метод `arcade.draw_lbwh_rectangle_filled()`.
-
-Используйте шаблон кода ниже (вместо `...` впишите свой код). Атрибуты класса должны иметь такие же имена, как и переданные аргументы. Цвет передаётся в 16-ричном формате.
-
- **Шаблон кода решения**
-
-```
 import arcade
 from arcade.types import Color
 
@@ -23,49 +5,40 @@ SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Flying squares"
 
+
 class MyGame(arcade.Window):
     def __init__(self, width, height, title, side, color):
         super().__init__(width, height, title)
+        arcade.set_background_color(arcade.color.BLACK)
         self.side = side
         self.color = color
 
     def setup(self):
-        self.points = ...  # Список списков координат квадратов для рисования
+        x = (self.width - self.side) // 2
+        self.points = [[x, 0], [x, 0]]
 
     def on_draw(self):
-        '''Этот метод отвечает за отрисовку содержимого окна'''
         self.clear()
-        ...
+        c = Color.from_hex_string(self.color)
+        for p in self.points:
+            arcade.draw_lbwh_rectangle_filled(p[0], p[1], self.side, self.side, c)
 
     def on_update(self, delta_time):
-        '''Этот метод отвечает за обновление логики игры (анимации, взаимодействия и т. д.)'''
-        ...
+        self.points[0][0] -= 2
+        self.points[0][1] += 2
+        self.points[1][0] += 2
+        self.points[1][1] += 2
+
 
 def setup_game(width=900, height=600, title="Flying squares", side=100, color="#ff40ff"):
     game = MyGame(width, height, title, side, color)
     game.setup()
     return game
 
+
 def main():
     setup_game(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     arcade.run()
-
-if __name__ == "__main__":
-    main()
-```
-
-### Результат
-
-![alt-text](./statement-file)
-
-"""
-
-import sys
-
-
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
 
 
 if __name__ == "__main__":
