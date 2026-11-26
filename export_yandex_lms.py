@@ -19,6 +19,7 @@ GROUP_ID = 56965
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BROWSER_PROFILE = os.path.join(os.path.expanduser('~'), '.ydexl_browser')
 PORT = 9222
+API = 'https://lms.yandex.ru/api/proxy/student'
 BROWSERS = [
     r'%ProgramFiles%\BraveSoftware\Brave-Browser\Application\brave.exe',
     r'%ProgramFiles(x86)%\BraveSoftware\Brave-Browser\Application\brave.exe',
@@ -312,7 +313,7 @@ def generate_solution_template(task_meta, limits, legend, in_md, out_md, samples
     return code
 
 def main():
-    lessons_url = f'https://lms.yandex.ru/api/student/lessons?courseId={COURSE_ID}&groupId={GROUP_ID}'
+    lessons_url = f'{API}/lessons/?groupId={GROUP_ID}&courseId={COURSE_ID}'
 
     print("[*] Чтение cookies из браузера...")
     session = make_session(get_cookies(headless=True))
@@ -321,13 +322,10 @@ def main():
     resp = session.get(lessons_url, allow_redirects=False)
     if resp.status_code != 200:
         print("[*] Нужен вход в Яндекс")
-        cookies = get_cookies(headless=False)
-        print("[*] Получены cookies:", ', '.join(sorted(f"{c['name']}@{c['domain']}" for c in cookies)) or 'нет')
-        session = make_session(cookies)
+        session = make_session(get_cookies(headless=False))
         resp = session.get(lessons_url, allow_redirects=False)
     if resp.status_code != 200:
-        print(f"[!] Ошибка запроса уроков: {resp.status_code} {resp.headers.get('Location', '')}")
-        print(resp.text[:300])
+        print(f"[!] Ошибка запроса уроков: {resp.status_code} {lessons_url}")
         return
 
     lessons = resp.json()
@@ -346,9 +344,10 @@ def main():
         print(f"\n[{l_idx}/{len(lessons)}] Урок {l_idx}: {l_title}")
         
         # Get tasks for lesson
-        tasks_resp = session.get(f'https://lms.yandex.ru/api/student/tasks?lessonId={l_id}&courseId={COURSE_ID}&groupId={GROUP_ID}')
+        tasks_url = f'{API}/tasks/?lessonId={l_id}&courseId={COURSE_ID}&groupId={GROUP_ID}'
+        tasks_resp = session.get(tasks_url)
         if tasks_resp.status_code != 200:
-            print(f"  [!] Ошибка при получении задач урока {l_id}: {tasks_resp.status_code}")
+            print(f"  [!] Ошибка при получении задач урока {l_id}: {tasks_resp.status_code} {tasks_url}")
             continue
 
         tasks_list = tasks_resp.json().get('results', [])
@@ -370,9 +369,10 @@ def main():
             print(f"  [{t_idx:02d}/{len(tasks_list):02d}] {tag_prefix.upper()} | {t_title} (ID: {t_id})")
 
             # Fetch detailed task
-            det_resp = session.get(f'https://lms.yandex.ru/api/student/tasks/{t_id}?groupId={GROUP_ID}')
+            det_url = f'{API}/tasks/{t_id}/?groupId={GROUP_ID}'
+            det_resp = session.get(det_url)
             if det_resp.status_code != 200:
-                print(f"    [!] Ошибка загрузки описания задачи {t_id}: {det_resp.status_code}")
+                print(f"    [!] Ошибка загрузки описания задачи {t_id}: {det_resp.status_code} {det_url}")
                 continue
 
             det_data = det_resp.json()
