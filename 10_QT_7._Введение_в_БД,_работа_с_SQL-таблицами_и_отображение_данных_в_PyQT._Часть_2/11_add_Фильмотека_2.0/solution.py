@@ -149,10 +149,13 @@ class AddFilmWidget(QMainWindow):
         self.pushButton = QPushButton("Добавить", w)
         self.pushButton.setGeometry(10, 170, 280, 30)
         self.con = sqlite3.connect("films_db.sqlite")
-        self.params = dict(self.con.execute("SELECT title, id FROM genres").fetchall())
-        self.comboBox.addItems(self.params)
+        rows = self.con.execute("SELECT title, id FROM genres").fetchall()
+        self.params = dict(rows)
+        self.ids = []
+        for t, i in rows:
+            self.comboBox.addItem(str(t))
+            self.ids.append(i)
         self.film_id = film_id
-        self.genre = None
         if film_id is None:
             self.pushButton.clicked.connect(self.get_adding_verdict)
         else:
@@ -167,13 +170,10 @@ class AddFilmWidget(QMainWindow):
         self.title.setPlainText(str(t))
         self.year.setPlainText(str(y))
         self.duration.setPlainText(str(d))
-        names = [k for k in self.params if self.params[k] == g]
-        if names:
-            self.comboBox.setCurrentText(names[0])
-        else:
-            self.genre = g
+        if g not in self.ids:
+            self.ids.append(g)
             self.comboBox.addItem(str(g))
-            self.comboBox.setCurrentText(str(g))
+        self.comboBox.setCurrentIndex(self.ids.index(g))
 
     def read(self):
         t = self.title.toPlainText().strip()
@@ -183,7 +183,7 @@ class AddFilmWidget(QMainWindow):
                 or self.comboBox.currentIndex() < 0:
             self.statusBar().showMessage("Неверно заполнена форма")
             return None
-        return t, int(y), self.params.get(self.comboBox.currentText(), self.genre), int(d)
+        return t, int(y), self.ids[self.comboBox.currentIndex()], int(d)
 
     def get_adding_verdict(self):
         a = self.read()
