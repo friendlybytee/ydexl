@@ -3,21 +3,32 @@ import sys
 import io
 import re
 import json
-import sqlite3
-import shutil
-import tempfile
+import time
+import subprocess
 import urllib.parse
 import requests
+import websocket
 from bs4 import BeautifulSoup
 from markdownify import markdownify as md
 
 # Set stdout to UTF-8
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-PROFILE_PATH = r'C:\Users\Admin\AppData\Local\Packages\Mozilla.Firefox_n80bbvh6b1yt2\LocalCache\Roaming\Mozilla\Firefox\Profiles\tnij8qw4.default-release'
 COURSE_ID = 1722
 GROUP_ID = 55020
-BASE_DIR = r'c:\Users\Admin\Documents\ydexl'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BROWSER_PROFILE = os.path.join(os.path.expanduser('~'), '.ydexl_browser')
+PORT = 9222
+BROWSERS = [
+    r'%ProgramFiles%\BraveSoftware\Brave-Browser\Application\brave.exe',
+    r'%ProgramFiles(x86)%\BraveSoftware\Brave-Browser\Application\brave.exe',
+    r'%LocalAppData%\BraveSoftware\Brave-Browser\Application\brave.exe',
+    r'%ProgramFiles%\Google\Chrome\Application\chrome.exe',
+    r'%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe',
+    r'%LocalAppData%\Google\Chrome\Application\chrome.exe',
+    '/usr/bin/brave-browser',
+    '/usr/bin/google-chrome',
+]
 
 TAG_MAP = {
     'classwork': ('cw', 'Классная работа'),
@@ -27,23 +38,55 @@ TAG_MAP = {
     'feedback-2': ('feedback', 'Обратная связь'),
 }
 
-def get_cookies():
-    cookie_file = os.path.join(PROFILE_PATH, 'cookies.sqlite')
-    temp_dir = tempfile.mkdtemp()
-    temp_cookie = os.path.join(temp_dir, 'cookies.sqlite')
-    shutil.copy2(cookie_file, temp_cookie)
-    for ext in ('-wal', '-shm'):
-        f = cookie_file + ext
-        if os.path.exists(f):
-            shutil.copy2(f, temp_cookie + ext)
+def find_browser():
+    for p in BROWSERS:
+        p = os.path.expandvars(p)
+        if os.path.exists(p):
+            return p
+    sys.exit('[!] Не найден ни Brave, ни Chrome')
 
-    conn = sqlite3.connect(temp_cookie)
-    cur = conn.cursor()
-    cur.execute('SELECT host, name, value, path FROM moz_cookies WHERE host LIKE "%yandex%"')
-    cookies = cur.fetchall()
-    conn.close()
-    shutil.rmtree(temp_dir, ignore_errors=True)
-    return cookies
+def get_cookies(headless):
+    args = [find_browser(), f'--remote-debugging-port={PORT}', f'--user-data-dir={BROWSER_PROFILE}', '--no-first-run']
+    if headless:
+        args += ['--headless=new', 'about:blank']
+    else:
+        args.append('https://lms.yandex.ru/')
+    proc = subprocess.Popen(args)
+
+    ws_url = None
+    for _ in range(50):
+        try:
+            ws_url = requests.get(f'http://127.0.0.1:{PORT}/json/version', timeout=1).json()['webSocketDebuggerUrl']
+            break
+        except requests.RequestException:
+            time.sleep(0.2)
+    if not ws_url:
+        proc.kill()
+        sys.exit('[!] Не удалось подключиться к браузеру')
+
+    if not headless:
+        input('[*] Войдите в аккаунт на lms.yandex.ru в открывшемся окне и нажмите Enter...')
+
+    ws = websocket.create_connection(ws_url, suppress_origin=True)
+    ws.send(json.dumps({'id': 1, 'method': 'Storage.getCookies'}))
+    cookies = json.loads(ws.recv())['result']['cookies']
+    ws.send(json.dumps({'id': 2, 'method': 'Browser.close'}))
+    ws.close()
+    try:
+        proc.wait(timeout=10)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+    return [c for c in cookies if 'yandex' in c['domain']]
+
+def make_session(cookies):
+    session = requests.Session()
+    for c in cookies:
+        session.cookies.set(c['name'], c['value'], domain=c['domain'], path=c['path'])
+    session.headers.update({
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+    })
+    return session
 
 def sanitize_filename(name):
     name = re.sub(r'[\\/*?:"<>|]', '_', name)
@@ -269,20 +312,17 @@ def generate_solution_template(task_meta, limits, legend, in_md, out_md, samples
     return code
 
 def main():
-    print("[*] Чтение cookies из профиля Firefox...")
-    cookies = get_cookies()
-    session = requests.Session()
-    for host, name, value, path in cookies:
-        session.cookies.set(name, value, domain=host, path=path)
+    lessons_url = f'https://lms.yandex.ru/api/student/lessons?courseId={COURSE_ID}&groupId={GROUP_ID}'
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:158.0) Gecko/20100101 Firefox/158.0',
-        'Accept': 'application/json, text/plain, */*',
-    }
-    session.headers.update(headers)
+    print("[*] Чтение cookies из браузера...")
+    session = make_session(get_cookies(headless=True))
 
     print(f"[*] Получение списка уроков курса {COURSE_ID} (группа {GROUP_ID})...")
-    resp = session.get(f'https://lms.yandex.ru/api/student/lessons?courseId={COURSE_ID}&groupId={GROUP_ID}')
+    resp = session.get(lessons_url, allow_redirects=False)
+    if resp.status_code != 200:
+        print("[*] Нужен вход в Яндекс")
+        session = make_session(get_cookies(headless=False))
+        resp = session.get(lessons_url, allow_redirects=False)
     if resp.status_code != 200:
         print(f"[!] Ошибка запроса уроков: {resp.status_code}")
         return
