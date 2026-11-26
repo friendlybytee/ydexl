@@ -321,10 +321,13 @@ def main():
     resp = session.get(lessons_url, allow_redirects=False)
     if resp.status_code != 200:
         print("[*] Нужен вход в Яндекс")
-        session = make_session(get_cookies(headless=False))
+        cookies = get_cookies(headless=False)
+        print("[*] Получены cookies:", ', '.join(sorted(f"{c['name']}@{c['domain']}" for c in cookies)) or 'нет')
+        session = make_session(cookies)
         resp = session.get(lessons_url, allow_redirects=False)
     if resp.status_code != 200:
-        print(f"[!] Ошибка запроса уроков: {resp.status_code}")
+        print(f"[!] Ошибка запроса уроков: {resp.status_code} {resp.headers.get('Location', '')}")
+        print(resp.text[:300])
         return
 
     lessons = resp.json()
