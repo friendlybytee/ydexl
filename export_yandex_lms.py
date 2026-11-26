@@ -15,7 +15,7 @@ from markdownify import markdownify as md
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 COURSE_ID = 1722
-GROUP_ID = 55020
+GROUP_ID = 56965
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BROWSER_PROFILE = os.path.join(os.path.expanduser('~'), '.ydexl_browser')
 PORT = 9222
