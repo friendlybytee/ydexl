@@ -1,53 +1,21 @@
-"""
-Задача: Параметры планеты
-Категория: Домашняя работа
-Ограничение времени: 1 секунда
-Ограничение памяти: 64 Мб
+from dataclasses import dataclass
+from functools import total_ordering
 
-Условие:
-Создайте датакласс **Planet**. У планеты есть имя (`name: str`), радиус (`radius: float`) и гравитация (`gravity: float`, по умолчанию 9.8). Методы:
-
-* `weight_on_planet(m, r)` — рассчитывает и возвращает вес тела массой m (кг) на расстоянии r (м) от поверхности планеты. Результат возвращается в ньютонах (Н).
-* `planet_mass()` — возвращает массу планеты в килограммах (кг), рассчитанную по формуле в примечании. Используйте значение гравитационной постоянной `G = 6.67430e-11`.
-* Планеты можно сравнивать между собой. Порядок сравнения:  
-  ○ Сначала по радиусу (`radius`).  
-  ○ Если радиусы равны — по гравитации (`gravity`).  
-  ○ Если гравитация равна — по имени (`name`).
-
-#### Требования
-
-1. Используйте датакласс (`@dataclass`).
-2. Все атрибуты должны быть аннотированы типами.
-3. Гравитационная постоянная должна быть определена как константа внутри класса или на уровне модуля.
-
-Формулы можно посмотреть в примечании.
-
-Пример:
---- Пример 1 ---
-Ввод:
-earth = Planet("Earth", 6371000, 9.8)
-mars = Planet("Mars", 3389500, 3.71)
-print(earth)
-print(mars)
-print(earth.planet_mass())
-print(earth.weight_on_planet(70, 0))
-print(earth > mars)
-Вывод:
-Planet(name='Earth', radius=6371000, gravity=9.8)
-Planet(name='Mars', radius=3389500, gravity=3.71)
-5.959853195091621e+24
-686.0
-True
-
-"""
-
-import sys
+G = 6.67430e-11
 
 
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
+@total_ordering
+@dataclass
+class Planet:
+    name: str
+    radius: float
+    gravity: float = 9.8
 
+    def weight_on_planet(self, m, r):
+        return self.gravity * self.radius ** 2 * m / (self.radius + r) ** 2
 
-if __name__ == "__main__":
-    main()
+    def planet_mass(self):
+        return self.gravity * self.radius ** 2 / G
+
+    def __lt__(self, other):
+        return (self.radius, self.gravity, self.name) < (other.radius, other.gravity, other.name)

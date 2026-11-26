@@ -1,45 +1,28 @@
-"""
-Задача: Галактический банк
-Категория: Домашняя работа
-Ограничение времени: 1 секунда
-Ограничение памяти: 64 Мб
+class CreditAccount:
+    def __init__(self, balance=0):
+        self.balance = balance
+        self.history = []
 
-Условие:
-Создайте класс **CreditAccount** (счёт в галактических кредитах). У него есть атрибуты: `balance` (баланс, по умолчанию 0) и `history` (список операций, при инициализации не передаётся).
+    def __add__(self, x):
+        a = CreditAccount(self.balance + x)
+        a.history = self.history + [f"+{x} кредитов"]
+        return a
 
-Перегрузите операторы:
+    def __sub__(self, x):
+        if x > self.balance:
+            raise ValueError("Не хватает кредитов! Иди подзаработай!")
+        a = CreditAccount(self.balance - x)
+        a.history = self.history + [f"-{x} кредитов"]
+        return a
 
-* `__add__` (пополнение) — создаёт новый счёт с увеличенным балансом и добавляет в историю запись `"+X кредитов"`.
-* `__sub__` (снятие) — создаёт новый счёт с уменьшенным балансом. Если денег не хватает, возбуждает исключение `ValueError("Не хватает кредитов! Иди подзаработай!")`, иначе добавляет в историю `"-X кредитов"`.
-* `__mul__` (инвестиции) — увеличивает баланс на переданное число процентов и добавляет в историю `"*X (инвестиционный доход)"`.
-* `__str__` — возвращает `"Баланс: X кредитов"`.
+    def __mul__(self, x):
+        self.balance += self.balance * x // 100
+        self.history.append(f"*{x} (инвестиционный доход)")
+        return self
 
-Добавьте метод `show_history()`, который выводит все операции.
+    def __str__(self):
+        return f"Баланс: {self.balance} кредитов"
 
-Пример:
---- Пример 1 ---
-Ввод:
-acc = CreditAccount(950)
-acc = acc + 100
-acc = acc - 50
-acc = acc * 5
-acc.show_history()
-print(acc)
-Вывод:
-+100 кредитов
--50 кредитов
-*5 (инвестиционный доход)
-Баланс: 1050 кредитов
-
-"""
-
-import sys
-
-
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
-
-
-if __name__ == "__main__":
-    main()
+    def show_history(self):
+        for s in self.history:
+            print(s)

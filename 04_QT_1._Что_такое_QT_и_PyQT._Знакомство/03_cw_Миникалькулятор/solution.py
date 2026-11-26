@@ -1,25 +1,47 @@
-"""
-Задача: Миникалькулятор
-Категория: Классная работа
-Ограничение времени: 1 секунда
-Ограничение памяти: 64Mb
-
-Условие:
-Напишите программу с графическим пользовательским интерфейсом на PyQT, в которой в два текстовых поля вводятся целые числа. После нажатия на кнопку программа должна вычислить сумму, разность, частное и произведение введенных чисел и вывести результат каждой операции в отдельные виджеты **QLCDNumber**. В случае попытки деления на 0 программа должна выводить вместо частного строку **"Error"**.
-
-![task3.gif](./upload.gif)
-
-Класс, реализующий окно приложения, назовите **MiniCalculator**. Поле для ввода первого числа назовите **number\_1**, второго - **number\_2**. Оба поля должны быть типа **QLineEdit**. Кнопку назовите - **calculate\_button**. Для изображения стрелки на кнопке используйте символы **"->"**. Поле для вывода результата суммы назовите **result\_sum**, разности - **result\_sub**, умножение - **result\_mul**, деления - **result\_div**. Все поля для вывода результатов должны быть типа **QLCDNumber**.
-
-"""
-
 import sys
 
+from PyQt6.QtWidgets import (QApplication, QGridLayout, QLabel, QLCDNumber, QLineEdit,
+                             QPushButton, QWidget)
 
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
+
+class MiniCalculator(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Миникалькулятор")
+        self.number_1 = QLineEdit()
+        self.number_2 = QLineEdit()
+        self.calculate_button = QPushButton("->")
+        self.calculate_button.clicked.connect(self.calc)
+        self.result_sum = QLCDNumber()
+        self.result_sub = QLCDNumber()
+        self.result_mul = QLCDNumber()
+        self.result_div = QLCDNumber()
+        lay = QGridLayout(self)
+        lay.addWidget(QLabel("Первое число(целое):"), 0, 0)
+        lay.addWidget(self.number_1, 1, 0)
+        lay.addWidget(QLabel("Второе число(целое):"), 2, 0)
+        lay.addWidget(self.number_2, 3, 0)
+        lay.addWidget(self.calculate_button, 1, 1)
+        names = ["Сумма:", "Разность:", "Произведение:", "Частное:"]
+        lcds = [self.result_sum, self.result_sub, self.result_mul, self.result_div]
+        for i in range(4):
+            lay.addWidget(QLabel(names[i]), i, 2)
+            lay.addWidget(lcds[i], i, 3)
+
+    def calc(self):
+        a = int(self.number_1.text())
+        b = int(self.number_2.text())
+        self.result_sum.display(a + b)
+        self.result_sub.display(a - b)
+        self.result_mul.display(a * b)
+        if b == 0:
+            self.result_div.display("Error")
+        else:
+            self.result_div.display(str(round(a / b, 3)))
 
 
 if __name__ == "__main__":
-    main()
+    app = QApplication(sys.argv)
+    w = MiniCalculator()
+    w.show()
+    sys.exit(app.exec())

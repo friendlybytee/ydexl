@@ -1,40 +1,21 @@
-"""
-Задача: Скорость на пределе
-Категория: Классная работа
-Ограничение времени: 1 секунда
-Ограничение памяти: 64 Мб
-
-Условие:
-Создайте датакласс **Spaceship**, который хранит название корабля (`name: str`), максимальную скорость (`max_speed: int`) и текущую скорость (`current_speed: int`).
-
-В методе `__post_init__` добавьте проверку: если `current_speed` больше `max_speed`, то поднимать исключение `ValueError` с сообщением `"Начальная скорость не может быть больше максимальной!"`.
-
-Добавьте метод `accelerate(speed_increase)`, который увеличивает текущую скорость. Если после ускорения скорость превышает максимальную, то скорость становится равной максимальной и выводится предупреждение: `"Осторожно! Двигатели на пределе!"`.
-
-Добавьте метод `slow_down(speed_decrease)`, который уменьшает скорость (ниже 0 скорость не падает).
-
-Пример:
---- Пример 1 ---
-Ввод:
-sps = Spaceship('Opportunity', 1000, 250)
-print(sps)
-sps.accelerate(751)
-sps.slow_down(512)
-print(sps)
-Вывод:
-Spaceship(name='Opportunity', max_speed=1000, current_speed=250)
-Осторожно! Двигатели на пределе!
-Spaceship(name='Opportunity', max_speed=1000, current_speed=488)
-
-"""
-
-import sys
+from dataclasses import dataclass
 
 
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
+@dataclass
+class Spaceship:
+    name: str
+    max_speed: int
+    current_speed: int
 
+    def __post_init__(self):
+        if self.current_speed > self.max_speed:
+            raise ValueError("Начальная скорость не может быть больше максимальной!")
 
-if __name__ == "__main__":
-    main()
+    def accelerate(self, speed_increase):
+        self.current_speed += speed_increase
+        if self.current_speed > self.max_speed:
+            self.current_speed = self.max_speed
+            print("Осторожно! Двигатели на пределе!")
+
+    def slow_down(self, speed_decrease):
+        self.current_speed = max(0, self.current_speed - speed_decrease)

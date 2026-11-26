@@ -1,27 +1,46 @@
-"""
-Задача: Арифмометр
-Категория: Домашняя работа
-Ограничение времени: 1 секунда
-Ограничение памяти: 64Mb
-
-Условие:
-Напишите программу «Арифмометр» с графическим пользовательским интерфейсом на PyQT.
-
-На форме разместите два поля для ввода, в которые по умолчанию запишите нули, между ними — 3 кнопки: +, -, \* , и третье поле для ввода, так же изначально заполненное нулем. При нажатии на кнопку с операцией в третье поле выводится результат. Постарайтесь сделать так, чтобы третье поле нельзя было редактировать вручную.
-
-![Task6.gif](./upload.gif)
-
-Класс, реализующий окно приложения, назовите **Arifmometr**. Поля для ввода данных - **first\_value**, **second\_value** (тип **QLineEdit**). Поле для вывода результата - **result** (тип **QLineEdit**). Кнопки: сложение - **add\_button**, вычитание - **substract\_button**, умножение - **multiply\_button**.
-
-"""
-
 import sys
 
+from PyQt6.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QPushButton, QWidget
 
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
+
+class Arifmometr(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Арифмометр")
+        self.first_value = QLineEdit("0")
+        self.add_button = QPushButton("+")
+        self.substract_button = QPushButton("-")
+        self.multiply_button = QPushButton("*")
+        self.second_value = QLineEdit("0")
+        self.result = QLineEdit("0")
+        self.result.setReadOnly(True)
+        self.add_button.clicked.connect(self.calc)
+        self.substract_button.clicked.connect(self.calc)
+        self.multiply_button.clicked.connect(self.calc)
+        lay = QHBoxLayout(self)
+        lay.addWidget(self.first_value)
+        lay.addWidget(self.add_button)
+        lay.addWidget(self.substract_button)
+        lay.addWidget(self.multiply_button)
+        lay.addWidget(self.second_value)
+        lay.addWidget(QLabel("="))
+        lay.addWidget(self.result)
+
+    def calc(self):
+        a = int(self.first_value.text())
+        b = int(self.second_value.text())
+        op = self.sender().text()
+        if op == "+":
+            r = a + b
+        elif op == "-":
+            r = a - b
+        else:
+            r = a * b
+        self.result.setText(str(r))
 
 
 if __name__ == "__main__":
-    main()
+    app = QApplication(sys.argv)
+    w = Arifmometr()
+    w.show()
+    sys.exit(app.exec())

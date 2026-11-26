@@ -1,71 +1,25 @@
-"""
-Задача: Летопись Гондора
-Категория: Дополнительные задачи
-Ограничение времени: 1 секунда
-Ограничение памяти: 64 Мб
-
-Условие:
-В Минас Тирите ведется летопись — список всех правителей с годами правления. В текстовом файле CSV записана летопись с заголовками (разделители — точка с запятой):  
-`имя, год начала правления, год конца правления`  
-`king, start_year, end_year`
-
-Напишите функции:
-
-* `load_kings(filename)` — загружает данные в список кортежей (имя, начало, конец), который и возвращает.
-* `filter_by_century(kings, century)` — принимает список кортежей и номер века (например, 35 век), возвращает список правителей, правивших в этом веке (хотя бы частично), в алфавитном порядке.
-* `longest_ruling(kings, n)` — возвращает топ-n правителей с самым долгим правлением (список имён); сортировка по убыванию долготы правления, затем по алфавиту.
-* `report(kings)` — возвращает отчет в формате:
-
-```
-Всего правителей: X
-Средняя длина правления: Y лет
-Самый долгий правитель: Z
-```
-
-Среднее округляется до целого вниз.  
-Самый долгий правитель определяется по тем же правилам, что и в функции *longest\_ruling*.
-
-Нулевой год относится к прошлому веку, например, 1200-й год — это 12-й век.
-
-Пример:
---- Пример 1 ---
-Ввод:
-# Содержимое файла cronicle.csv
-king;start_year;end_year
-Elendil;3320;3441
-Isildur;3441;3442
-Meneldil;3442;3580
-Cemendur;3580;3680
-Earendil;3680;3780
-Anardil;3780;3880
-Ostoher;3880;3980
-Romendacil I;3980;4080
-Turambar;4080;4180
-Atanatar I;4180;4280
-Siriondil;4280;4380
-Tarannon;4380;4480
-Earnil I;4480;4580
-Ciryandil;4580;4680
-
-# Вызов функций
-kings = load_kings('cronicle.csv')
-print(*filter_by_century(kings, 34), sep=', ')
-print(report(kings))
-Вывод:
-Elendil
-Всего правителей: 14
-Средняя длина правления: 98 лет
-Самый долгий правитель: Meneldil
-
-"""
-
-import sys
+import csv
 
 
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
+def load_kings(filename):
+    with open(filename, encoding='utf-8') as f:
+        return [(r['king'], int(r['start_year']), int(r['end_year']))
+                for r in csv.DictReader(f, delimiter=';')]
 
 
-if __name__ == "__main__":
-    main()
+def filter_by_century(kings, century):
+    a = (century - 1) * 100 + 1
+    b = century * 100
+    return sorted(k[0] for k in kings if k[1] <= b and k[2] >= a)
+
+
+def longest_ruling(kings, n):
+    lst = sorted(kings, key=lambda k: (-(k[2] - k[1] + 1), k[0]))
+    return [k[0] for k in lst[:n]]
+
+
+def report(kings):
+    avg = sum(k[2] - k[1] + 1 for k in kings) // len(kings)
+    return (f'Всего правителей: {len(kings)}\n'
+            f'Средняя длина правления: {avg} лет\n'
+            f'Самый долгий правитель: {longest_ruling(kings, 1)[0]}')

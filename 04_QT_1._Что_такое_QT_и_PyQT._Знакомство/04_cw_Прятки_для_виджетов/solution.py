@@ -1,25 +1,30 @@
-"""
-Задача: Прятки для виджетов
-Категория: Классная работа
-Ограничение времени: 1 секунда
-Ограничение памяти: 64Mb
-
-Условие:
-Посмотрите документацию на виджет **QCheckBox**, а затем научитесь «прятать» и «возвращать» виджеты. Если не удается найти, подумайте, как по-английски будет «прятать» и «показать». После этого разместите на форме четыре виджета типа **QLineEdit**, а рядом с ними чекбоксы (**QCheckBox**). Напишите обработчики, которые прячут и показывают виджеты в зависимости от состояния чекбокса. Попробуйте не писать по обработчику для каждого чекбокса, а сделать один универсальный.
-
-![task4.gif](./upload.gif)
-
-Класс, реализующий окно приложения, назовите **WidgetsHideNSeek**. Виджеты, которые будут прятаться, назовите **edit1**, **edit2**, **edit3**, **edit4**, чекбоксы **checkbox1**, **checkbox2**, **checkbox3**, **checkbox4**.
-
-"""
-
 import sys
 
+from PyQt6.QtWidgets import QApplication, QCheckBox, QGridLayout, QLineEdit, QWidget
 
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
+
+class WidgetsHideNSeek(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Прятки для виджетов")
+        lay = QGridLayout(self)
+        for i in range(1, 5):
+            cb = QCheckBox(f"edit{i}")
+            cb.setChecked(True)
+            cb.toggled.connect(self.toggle)
+            e = QLineEdit()
+            setattr(self, f"checkbox{i}", cb)
+            setattr(self, f"edit{i}", e)
+            lay.addWidget(cb, i, 0)
+            lay.addWidget(e, i, 1)
+
+    def toggle(self, on):
+        e = getattr(self, self.sender().text())
+        e.setVisible(on)
 
 
 if __name__ == "__main__":
-    main()
+    app = QApplication(sys.argv)
+    w = WidgetsHideNSeek()
+    w.show()
+    sys.exit(app.exec())

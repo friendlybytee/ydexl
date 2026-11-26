@@ -1,49 +1,26 @@
-"""
-Задача: Автостоп
-Категория: Классная работа
-Ограничение времени: 1 секунда
-Ограничение памяти: 64 Мб
+class Traveler:
+    def __init__(self, name, towel=True):
+        self.name = name
+        self.towel = towel
 
-Условие:
-Создайте базовый класс **Traveler** (`Путешественник`). У него есть атрибуты `name` (имя) и `towel` (есть ли полотенце, по умолчанию `True`). Метод `needs_ride()` возвращает строку:  
-`"<name> голосует на дороге..."`.
-
-Создайте двух наследников:
-
-* **Arthur** (Артур Дент). При инициализации у него всегда есть полотенце, а зовут его всегда Артур. Переопределите метод `needs_ride()`, чтобы он возвращал:  
-  `"Артур голосует на дороге, в панике размахивая полотенцем."` (используйте `super()` для базового текста).
-* **Alien** (Инопланетянин). Принимает параметр `species` (раса) после остальных атрибутов. Если это `"Вогон"`, то у него нет полотенца (принудительно выставить `towel=False`). Метод `needs_ride()` возвращает просто  
-  `"<name> голосует на дороге: <species> издаёт непонятные звуки, требуя подвезти."` (используйте `super()` для базового текста).
-
-Пример:
---- Пример 1 ---
-Ввод:
-t1 = Traveler("Зигфрид")
-print(t1.name)
-print(t1.towel)
-
-t2 = Traveler("Триллиан")
-print(t2.needs_ride())
-
-a1 = Arthur()
-print(a1.name)
-print(a1.needs_ride())
-Вывод:
-Зигфрид
-True
-Триллиан голосует на дороге...
-Артур
-Артур голосует на дороге, в панике размахивая полотенцем.
-
-"""
-
-import sys
+    def needs_ride(self):
+        return f"{self.name} голосует на дороге..."
 
 
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
+class Arthur(Traveler):
+    def __init__(self):
+        super().__init__("Артур", True)
+
+    def needs_ride(self):
+        return super().needs_ride()[:-3] + ", в панике размахивая полотенцем."
 
 
-if __name__ == "__main__":
-    main()
+class Alien(Traveler):
+    def __init__(self, name, towel=True, species=""):
+        super().__init__(name, towel)
+        self.species = species
+        if species == "Вогон":
+            self.towel = False
+
+    def needs_ride(self):
+        return super().needs_ride()[:-3] + f": {self.species} издаёт непонятные звуки, требуя подвезти."

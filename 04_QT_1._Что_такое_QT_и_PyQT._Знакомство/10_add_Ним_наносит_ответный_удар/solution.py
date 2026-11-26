@@ -1,29 +1,65 @@
-"""
-Задача: Ним наносит ответный удар
-Категория: Дополнительные задачи
-Ограничение времени: 1 секунда
-Ограничение памяти: 64Mb
-
-Условие:
-Давайте попробуем создать небольшую игру с графическим пользовательским интерфейсом на PyQT, которая по своей сути напоминает некоторую вариацию игр Ним, которые мы делали раньше.
-
-В начале игры генерируется число X и выводится на экран. Также создаются две кнопки, одна из которых отвечает за увеличение этого числа на Y, а вторая — за уменьшение числа на Z. X, Y, Z — случайные положительные целые числа.
-
-Задача игрока — с помощью этих двух кнопок за 10 ходов привести значение Х к 0. Количество оставшихся ходов должно выводиться на экран. Если у пользователя получилось выиграть, нужно вывести поздравительное сообщение, если нет — вывести сообщение о проигрыше и начать игру заново с новыми значениями X, Y, Z.
-
-![Task10.gif](./upload.gif)
-
-Класс, реализующий окно приложения, назовите **NimStrikesBack**. Сообщения о проигрыше и выигрыше поместите в **QLabel** **result\_label**. Также в классе должны быть поля **X**, **Y**, **Z**, с соответствующей информацией. Кнопку для увеличения на Y назовите **btnp**, для уменьшения на Z назовите **btnm**.
-
-"""
-
 import sys
+from random import randint
+
+from PyQt6.QtWidgets import QApplication, QGridLayout, QLabel, QLCDNumber, QPushButton, QWidget
 
 
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
+class NimStrikesBack(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Ним наносит ответный удар")
+        lay = QGridLayout(self)
+        self.result_label = QLabel()
+        lay.addWidget(self.result_label, 0, 0, 1, 2)
+        self.btnp = QPushButton()
+        self.btnm = QPushButton()
+        self.btnp.clicked.connect(self.plus)
+        self.btnm.clicked.connect(self.minus)
+        lay.addWidget(self.btnp, 1, 0)
+        lay.addWidget(self.btnm, 1, 1)
+        self.moves_lcd = QLCDNumber()
+        self.x_lcd = QLCDNumber()
+        lay.addWidget(QLabel("Осталось ходов"), 2, 0)
+        lay.addWidget(self.moves_lcd, 2, 1)
+        lay.addWidget(QLabel("Текущее число"), 3, 0)
+        lay.addWidget(self.x_lcd, 3, 1)
+        self.new_game()
+
+    def new_game(self):
+        self.X = randint(1, 50)
+        self.Y = randint(1, 10)
+        self.Z = randint(1, 10)
+        self.moves = 10
+        self.btnp.setText(f"+{self.Y}")
+        self.btnm.setText(f"-{self.Z}")
+        self.show_state()
+
+    def show_state(self):
+        self.moves_lcd.display(self.moves)
+        self.x_lcd.display(self.X)
+
+    def plus(self):
+        self.step(self.Y)
+
+    def minus(self):
+        self.step(-self.Z)
+
+    def step(self, d):
+        self.X += d
+        self.moves -= 1
+        self.result_label.setText("")
+        if self.X == 0:
+            self.result_label.setText("Вы победили, начинаем новую игру")
+            self.new_game()
+        elif self.moves == 0:
+            self.result_label.setText("Вы проиграли, начинаем новую игру")
+            self.new_game()
+        else:
+            self.show_state()
 
 
 if __name__ == "__main__":
-    main()
+    app = QApplication(sys.argv)
+    w = NimStrikesBack()
+    w.show()
+    sys.exit(app.exec())

@@ -1,25 +1,34 @@
-"""
-Задача: Фокус со словами
-Категория: Классная работа
-Ограничение времени: 1 секунда
-Ограничение памяти: 64Mb
-
-Условие:
-Напишите перекидыватель слов. На форме разместите два поля для ввода и кнопку. На кнопке должна быть показана стрелка от первого поля ко второму. В первое поле вводится строчка, по нажатию кнопки эта строчка перебрасывается в другое поле, при этом на кнопке меняется стрелка на противоположную. При повторном нажатии строчка летит обратно, а стрелка на кнопке меняется на изначальную. И так далее. При этом строчка должна перекидываться в направлении, которое указывает стрелка, и перекидываться должна даже пустая строка.
-
-![task1.gif](./upload.gif)
-
-Класс, реализующий окно приложения, назовите **WordTrick**. Поле, находящееся слева от кнопки - **first\_value**, справа - **second\_value**. Оба поля должны быть типа **QLineEdit**. Кнопку назовите - **trick\_button**. Для изображения стрелки на кнопке используйте символы **"->"** и **"<-"**.
-
-"""
-
 import sys
 
+from PyQt6.QtWidgets import QApplication, QHBoxLayout, QLineEdit, QPushButton, QWidget
 
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
+
+class WordTrick(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Фокус со словами")
+        self.first_value = QLineEdit()
+        self.trick_button = QPushButton("->")
+        self.second_value = QLineEdit()
+        self.trick_button.clicked.connect(self.trick)
+        lay = QHBoxLayout(self)
+        lay.addWidget(self.first_value)
+        lay.addWidget(self.trick_button)
+        lay.addWidget(self.second_value)
+
+    def trick(self):
+        if self.trick_button.text() == "->":
+            self.second_value.setText(self.first_value.text())
+            self.first_value.setText("")
+            self.trick_button.setText("<-")
+        else:
+            self.first_value.setText(self.second_value.text())
+            self.second_value.setText("")
+            self.trick_button.setText("->")
 
 
 if __name__ == "__main__":
-    main()
+    app = QApplication(sys.argv)
+    w = WordTrick()
+    w.show()
+    sys.exit(app.exec())

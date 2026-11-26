@@ -1,49 +1,13 @@
-"""
-Задача: Кольца Всевластья
-Категория: Классная работа
-Ограничение времени: 1 секунда
-Ограничение памяти: 64 Мб
+import json
 
-Условие:
-Каждое кольцо имеет характеристики:  
-`название, материал, хранитель, сила.`
-
-Напишите программу, которая выберет самое властное кольцо (с наибольшим значением силы) и запишет его характеристики в словарь.
-
-В файле **rings.txt** записаны сведения о кольцах (характеристики через пробел).  
-В файл **powerful.json** запишите словарь, составленный для самого властного кольца с ключами:  
-`title, material, keeper, power, visibility.`
-
-Значение для последнего ключа определяется по сумме длины имени кольца, имени хранителя и значения силы. Если эта сумма чётная, то значение `visible`, иначе `invisible`.  
-Если в файле есть несколько колец с одинаковой силой, то берётся последнее.
-
-Пример:
---- Пример 1 ---
-Ввод:
-Nenya Mithril Galadriel 95
-Narya Ruby Gandalf 92
-Vilya Sapphire Elrond 98
-TheOne Gold Sauron 100
-Thror Gold Thorin 70
-Durin Mithril Durin 75
-Вывод:
-{
-  "title": "TheOne",
-  "material": "Gold",
-  "keeper": "Sauron",
-  "power": 100,
-  "visibility": "visible"
-}
-
-"""
-
-import sys
-
-
-def main():
-    # TODO: вайбкодинг решения начинается здесь
-    pass
-
-
-if __name__ == "__main__":
-    main()
+best = None
+with open('rings.txt', encoding='utf-8') as f:
+    for s in f:
+        a = s.split()
+        if a and (best is None or int(a[3]) >= int(best[3])):
+            best = a
+t, m, k, p = best[0], best[1], best[2], int(best[3])
+d = {'title': t, 'material': m, 'keeper': k, 'power': p,
+     'visibility': 'visible' if (len(t) + len(k) + p) % 2 == 0 else 'invisible'}
+with open('powerful.json', 'w', encoding='utf-8') as f:
+    json.dump(d, f, ensure_ascii=False, indent=2)
