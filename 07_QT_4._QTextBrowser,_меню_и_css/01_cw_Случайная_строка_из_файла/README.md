@@ -20,4 +20,4 @@
 
 Класс, реализующий окно приложения, назовите `RandomString`. Кнопку — `button`, поле для вывода строки — `textBrowser`. Класс `RandomString` должен иметь определение метода `load_random_string`, который открывает файл и выводит содержимое в окно. В случае отсутствия файла нужно выводить пустую строку.
 
-![random_string.gif](./statement-file.gif)
+![random_string.gif](./statement-file)

@@ -21,12 +21,12 @@
 При изменении размера изображения используйте алгоритм `LANCZOS`. Для этого метод `resize()` используйте с параметром:  
 `resize((w, h), Image.Resampling.LANCZOS)`
 
-Архив из примера можно скачать по [ссылке](https://assets.contest.yandex.net/testsys/statement-file.png?hash=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..HzaxhjOoWIZwk2q6.XlYv9j71hMAiZXo8T8A_aywbaWrYOdwAeqwMql_lVXbrQikKlDvgemZViRV7Doi1j69y6CQCaCj1RdBqG9zPtTN9Iy0WdHhVJwnMq7l06tc.tDyGfni6cbOJr0K7-kbFgA).
+Архив из примера можно скачать по [ссылке](https://assets.contest.yandex.net/testsys/statement-file?hash=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..HzaxhjOoWIZwk2q6.XlYv9j71hMAiZXo8T8A_aywbaWrYOdwAeqwMql_lVXbrQikKlDvgemZViRV7Doi1j69y6CQCaCj1RdBqG9zPtTN9Iy0WdHhVJwnMq7l06tc.tDyGfni6cbOJr0K7-kbFgA).
 
 #### Изображения из narnia\_photos из примера:
 
-![alt-text](./statement-file.png)
+![alt-text](./statement-file)
 
 #### В примере миниатюры должны быть такими:
 
-![alt-text](./statement-file.png)
+![alt-text](./statement-file)

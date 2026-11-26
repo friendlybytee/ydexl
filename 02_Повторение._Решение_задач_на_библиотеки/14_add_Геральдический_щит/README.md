@@ -27,80 +27,47 @@
 #### Пример входного файла
 
 ```
-{
-
-    "background": "gold",
-
-    "border": {
-
-        "color": "maroon",
-
-        "width": 20
-
-    },
-
-    "emblem": {
-
-        "shape": "circle",
-
-        "color": "red",
-
-        "position": [400, 300],
-
-        "radius": 120
-
-    },
-
-    "symbols": [
-
-        {
-
-            "shape": "star",
-
-            "color": "white",
-
-            "position": [150, 150],
-
-            "size": 120
-
-        },
-
-        {
-
-            "shape": "star",
-
-            "color": "white",
-
-            "position": [650, 150],
-
-            "size": 120
-
-        },
-
-        {
-
-            "shape": "cross",
-
-            "color": "silver",
-
-            "position": [400, 600],
-
-            "size": 200
-
-        }
-
-    ]
-
-}
-
+{
+    "background": "gold",
+    "border": {
+        "color": "maroon",
+        "width": 20
+    },
+    "emblem": {
+        "shape": "circle",
+        "color": "red",
+        "position": [400, 300],
+        "radius": 120
+    },
+    "symbols": [
+        {
+            "shape": "star",
+            "color": "white",
+            "position": [150, 150],
+            "size": 120
+        },
+        {
+            "shape": "star",
+            "color": "white",
+            "position": [650, 150],
+            "size": 120
+        },
+        {
+            "shape": "cross",
+            "color": "silver",
+            "position": [400, 600],
+            "size": 200
+        }
+    ]
+}
 ```
 
 **Результат:**
 
-![result](./statement-file.png)
+![result](./statement-file)
 
 Схема звезды:  
-![result](./statement-file.png)
+![result](./statement-file)
 
 Схема креста:  
-![result](./statement-file.png)
+![result](./statement-file)

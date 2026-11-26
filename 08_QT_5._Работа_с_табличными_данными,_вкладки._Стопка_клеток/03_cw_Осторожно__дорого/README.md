@@ -23,4 +23,4 @@
 По нажатию на кнопку с именем *updateButton* должно происходить обновление цветов.  
 Класс, реализующий окно приложения и наследующийся от `QWidget`, назовите **Expensive**.
 
-![expensive2.gif](./statement-file.gif)
+![expensive2.gif](./statement-file)

@@ -26,4 +26,4 @@
 
 **Результат:**
 
-![result](./statement-file.png)
+![result](./statement-file)

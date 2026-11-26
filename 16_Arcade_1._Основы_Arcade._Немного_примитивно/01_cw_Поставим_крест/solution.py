@@ -1,0 +1,62 @@
+"""
+Задача: Поставим крест
+Категория: Классная работа
+Ограничение времени: 20 секунд
+Ограничение памяти: 256 Мб
+
+Условие:
+Ваша первая задача в модуле по `arcade` — написать приложение, рисующее примитивный крест.
+
+Напишите программу, используя библиотеку `arcade`, которая создаёт окно заданного размера чёрного цвета, перечёркнутого по диагоналям белым крестом толщиной `4` пикселя. Для отрисовки линий используйте метод `on_draw`.
+
+Для успешной сдачи задачи вам нужно объявить необходимый класс, а также функцию `setup_game`. Ничего вызывать не нужно, но для удобства тестирования на работоспособность программы вы можете объявить блок `if __name__ == "__main__"` и функцию `main`.
+
+Используйте шаблон кода ниже (вместо `...` впишите свой код):
+
+ **Шаблон кода решения**
+
+```
+import arcade
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+SCREEN_TITLE = "Cross"
+
+class MyGame(arcade.Window):
+    def __init__(self, width, height, title):
+        super().__init__(width, height, title)
+        arcade.set_background_color(arcade.color.BLACK)
+
+    def on_draw(self):
+        '''Этот метод отвечает за отрисовку содержимого окна'''
+        self.clear()
+        ...
+
+def setup_game(width=800, height=600, title="Cross"):
+    game = MyGame(width, height, title)
+    return game
+
+def main():
+    setup_game(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    arcade.run()
+
+if __name__ == "__main__":
+    main()
+```
+
+### Результат (800x600)
+
+![alt-text](./statement-file)
+
+"""
+
+import sys
+
+
+def main():
+    # TODO: вайбкодинг решения начинается здесь
+    pass
+
+
+if __name__ == "__main__":
+    main()

@@ -36,4 +36,4 @@
 
 Класс, реализующий окно приложения и наследующийся от `QMainWindow`, назовите `FileStat`. Поле ввода названия файла — `filenameEdit`, кнопку — `button`. Поле для вывода назовите `textBrowser`.
 
-![file_stat.gif](./statement-file.gif)
+![file_stat.gif](./statement-file)

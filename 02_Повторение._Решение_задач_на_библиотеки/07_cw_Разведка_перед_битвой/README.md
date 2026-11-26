@@ -29,6 +29,6 @@
 
 ### Возможный результат
 
-![result](./statement-file.png)
+![result](./statement-file)
 
 Пример результата для строки из примера [enemies.xlsx](./enemies.xlsx).

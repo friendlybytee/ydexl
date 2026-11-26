@@ -22,8 +22,8 @@
 
 ### Пример файла winter.png
 
-![alt-text](./statement-file.png)
+![alt-text](./statement-file)
 
 ### Результат в файле spring.png
 
-![alt-text](./statement-file.png)
+![alt-text](./statement-file)

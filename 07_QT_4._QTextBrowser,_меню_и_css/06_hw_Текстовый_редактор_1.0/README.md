@@ -22,7 +22,7 @@
 
 Класс `Notebook` должен определять методы `new_file`, `save_file`, `open_file`.
 
-![notebook.gif](./statement-file.gif)
+![notebook.gif](./statement-file)
 
 Класс, реализующий окно приложения, назовите `Notebook` и унаследуйте его от `QWidget`.  
  Кнопки назовите `new_button`, `save_button` и `open_button`.  

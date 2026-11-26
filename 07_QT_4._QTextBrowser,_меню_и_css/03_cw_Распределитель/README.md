@@ -38,4 +38,4 @@
 
 Назовите класс `Distributor` (он наследуется от `QMainWindow`), виджет `QTextBrowser` — `text_browser`. Класс должен реализовывать методы `load_file`, `save_file` и `spread`. `spread` должен иметь обязательный параметр - расширение файла, при выборе пункта "Другие" в метод передаётся пустая строка.
 
-![distributor.gif](./statement-file.gif)
+![distributor.gif](./statement-file)

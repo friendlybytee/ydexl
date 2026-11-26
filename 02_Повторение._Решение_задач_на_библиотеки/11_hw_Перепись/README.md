@@ -53,10 +53,10 @@ B6: процент этой расы от общего числа жителей
 
 ### Пример листа Жители исходного файла
 
-![result](./statement-file.png)
+![result](./statement-file)
 
 ### Результат
 
-![result](./statement-file.png)
+![result](./statement-file)
 
 Файлы из примера [census.xlsx](./census.xlsx), [statistics.xlsx](./statistics.xlsx).

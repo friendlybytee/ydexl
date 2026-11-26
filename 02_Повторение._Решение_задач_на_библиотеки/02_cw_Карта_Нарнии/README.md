@@ -24,7 +24,7 @@
 
 #### Структура папки narnia\_map из примера:
 
-![alt-text](./statement-file.png)
+![alt-text](./statement-file)
 
 #### В примере вывод должен быть такой:
 

@@ -14,7 +14,7 @@
 
 ## Условие
 
-Используя файл со сведениями и работе выпускников по полученной специальности (для отладки можно использовать [такой файл](https://assets.contest.yandex.net/testsys/statement-file.gif?hash=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..Fgw7gSGCFGgQ6cMV.c0HUlMx5aWIr_1IF6y86vXKYMicckVXPrCp6LZ08Fyt1uRF2PHA3Ts2fQqFPvnnBZfvHZchCVn9vy2XkZmdTV0JC8P1B1Gs.trXLrq4mcEAha42DyKOhvg)), напишите приложение на PyQT6 с несколькими вкладками. В основном окне на вкладке **Данные** разместите таблицу, отображающую данные из файла, который выбирается по нажатию на кнопку **Открыть файл** (возникает диалоговое окно для выбора файла).
+Используя файл со сведениями и работе выпускников по полученной специальности (для отладки можно использовать [такой файл](https://assets.contest.yandex.net/testsys/statement-file?hash=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..Fgw7gSGCFGgQ6cMV.c0HUlMx5aWIr_1IF6y86vXKYMicckVXPrCp6LZ08Fyt1uRF2PHA3Ts2fQqFPvnnBZfvHZchCVn9vy2XkZmdTV0JC8P1B1Gs.trXLrq4mcEAha42DyKOhvg)), напишите приложение на PyQT6 с несколькими вкладками. В основном окне на вкладке **Данные** разместите таблицу, отображающую данные из файла, который выбирается по нажатию на кнопку **Открыть файл** (возникает диалоговое окно для выбора файла).
 
 Следующие вкладки имеют имена:
 
@@ -22,7 +22,7 @@
 * Соответствует
 * Не соответствует
 
-![graduators.gif](./statement-file.gif)
+![graduators.gif](./statement-file)
 
 При решении используйте шаблон класса; имена виджетов и методов класса не меняйте. Вся логика решения описана в комментариях, реализуйте её вместо многоточий.
 

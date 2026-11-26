@@ -14,7 +14,7 @@
 
 ## Условие
 
-В файле `cat_breeds.csv` (для отладки можно скачать [пример](https://assets.contest.yandex.net/testsys/statement-file.gif?hash=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..HkG93vRbQBIbkIFP.w_EA9T9VmygunKBPO35lmX2UaEsdKm-PjCSORVPh1GpXgB5e9XlpU1mnalhGvVmAxGf-Hw876_q0ASIOAcNml0PmZzS-nsh-jsziznUI.OSQoHGMkg68BTdw2qdFf-g)) записана информация о породах кошек и некоторые дополнительные сведения о каждой из них с заголовками (разделители — ;):
+В файле `cat_breeds.csv` (для отладки можно скачать [пример](https://assets.contest.yandex.net/testsys/statement-file?hash=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..HkG93vRbQBIbkIFP.w_EA9T9VmygunKBPO35lmX2UaEsdKm-PjCSORVPh1GpXgB5e9XlpU1mnalhGvVmAxGf-Hw876_q0ASIOAcNml0PmZzS-nsh-jsziznUI.OSQoHGMkg68BTdw2qdFf-g)) записана информация о породах кошек и некоторые дополнительные сведения о каждой из них с заголовками (разделители — ;):
 
 ```
 Breed; Location of origin; Type; Body type; Coat type and length; Coat pattern
@@ -38,4 +38,4 @@ Tan
 
 Окно содержит строку для ввода породы `QLineEdit` с именем `lineEdit` (вывод появляется сразу после ввода символа) и поле вывода `QTextBrowser` с именем `textBrowser`.
 
-![cat_breeds.gif](./statement-file.gif)
+![cat_breeds.gif](./statement-file)

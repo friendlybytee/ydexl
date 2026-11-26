@@ -29,4 +29,4 @@
 
 Класс должен реализовывать методы `write_text` и `clear_text`. А так же иметь дополнительные атрибут - `text`, список заголовков.
 
-![headers_colored.gif](./statement-file.gif)
+![headers_colored.gif](./statement-file)
